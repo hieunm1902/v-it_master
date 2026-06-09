@@ -1,7 +1,7 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
-import StatsStrip from '@/components/sections/StatsStrip';
+import Speakers from '@/components/sections/Speakers';
 import CommunityFeatures from '@/components/sections/CommunityFeatures';
 import FeaturedArticles from '@/components/sections/FeaturedArticles';
 import UpcomingEvents from '@/components/sections/UpcomingEvents';
@@ -15,7 +15,7 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <StatsStrip />
+        <Speakers />
         <CommunityFeatures />
         <FeaturedArticles />
         <UpcomingEvents />
