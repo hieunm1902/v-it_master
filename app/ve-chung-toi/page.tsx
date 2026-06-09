@@ -176,13 +176,13 @@ export default function AboutPage() {
                     {author.github && (
                       <a href={`https://github.com/${author.github}`} target="_blank" rel="noopener noreferrer"
                         className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors">
-                        <Github className="w-3.5 h-3.5 text-slate-600" />
+                        <IconGithub className="w-3.5 h-3.5 text-slate-600" />
                       </a>
                     )}
                     {author.linkedin && (
                       <a href={`https://linkedin.com/in/${author.linkedin}`} target="_blank" rel="noopener noreferrer"
                         className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors">
-                        <Linkedin className="w-3.5 h-3.5 text-slate-600" />
+                        <IconLinkedin className="w-3.5 h-3.5 text-slate-600" />
                       </a>
                     )}
                   </div>
