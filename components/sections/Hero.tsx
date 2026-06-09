@@ -1,91 +1,133 @@
 import Link from 'next/link';
-import { ArrowRight, Zap, TrendingUp, Calendar, BookOpen, Users, Star } from 'lucide-react';
+import { ArrowRight, Zap, BookOpen, Star } from 'lucide-react';
 
-/* ── Floating mock cards ────────────────────────────────────────────────── */
+/* ── App Screenshot Mockup ──────────────────────────────────────────────── */
 
-function ArticleCard() {
+function AppMockup() {
   return (
-    <div className="glass-light rounded-2xl p-4 shadow-2xl w-72 animate-float">
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-sm">⚛️</div>
-        <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Frontend</span>
-      </div>
-      <p className="text-sm font-bold text-slate-800 leading-snug mb-3">
-        React Server Components: Tương lai của React đã đến
-      </p>
-      <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-400 to-violet-500 flex items-center justify-center text-[9px] font-bold text-white">NM</div>
-        <span className="text-xs text-slate-500">Nguyễn Minh Khôi</span>
-        <span className="text-xs text-slate-400 ml-auto">8 phút đọc</span>
-      </div>
-    </div>
-  );
-}
-
-function EventCard() {
-  return (
-    <div className="glass-light rounded-2xl p-4 shadow-2xl w-64 animate-float-delay">
-      <div className="flex items-center gap-2 mb-3">
-        <Calendar className="w-4 h-4 text-orange-500" />
-        <span className="text-xs font-semibold text-orange-600">Sự kiện sắp diễn ra</span>
-      </div>
-      <p className="text-sm font-bold text-slate-800 mb-1">Vietnam Tech Summit 2026</p>
-      <p className="text-xs text-slate-500 mb-3">15–16 Tháng 7 · Hà Nội</p>
-      <div className="flex items-center justify-between">
-        <div className="flex -space-x-1.5">
-          {['NM','TL','LQ'].map(i => (
-            <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-400 to-violet-500 border-2 border-white flex items-center justify-center text-[8px] font-bold text-white">{i}</div>
-          ))}
+    <div
+      className="relative w-full max-w-[580px] rounded-2xl overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.7)] border border-white/10"
+      style={{ transform: 'perspective(1200px) rotateY(-6deg) rotateX(3deg)' }}
+    >
+      {/* Browser chrome */}
+      <div className="bg-[#1a2540] px-4 py-3 flex items-center gap-3 border-b border-white/8">
+        <div className="flex gap-1.5 shrink-0">
+          <div className="w-3 h-3 rounded-full bg-red-400/70" />
+          <div className="w-3 h-3 rounded-full bg-yellow-400/70" />
+          <div className="w-3 h-3 rounded-full bg-green-400/70" />
         </div>
-        <span className="text-xs font-semibold text-emerald-600">1,243 đã đăng ký</span>
+        <div className="flex-1 bg-white/8 rounded-md px-3 py-1 text-[11px] text-slate-400 font-mono">
+          v-it.community
+        </div>
       </div>
-    </div>
-  );
-}
 
-function NotifCard() {
-  return (
-    <div className="glass-light rounded-xl px-4 py-3 shadow-xl flex items-center gap-3 w-64 animate-float-slow">
-      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-sm shrink-0">💚</div>
-      <div>
-        <p className="text-xs font-bold text-slate-800">Quyên góp thành công</p>
-        <p className="text-xs text-slate-500">127.5 triệu / 150 triệu VND</p>
-      </div>
-    </div>
-  );
-}
+      {/* App UI */}
+      <div className="bg-[#f8fafc]">
 
-function MemberBadge() {
-  return (
-    <div className="glass rounded-xl px-4 py-3 flex items-center gap-3 w-56">
-      <div className="flex -space-x-2 shrink-0">
-        {['NM','TL','LQ','PT','HT'].map(i => (
-          <div key={i} className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 border-2 border-slate-900 flex items-center justify-center text-[9px] font-bold text-white">{i}</div>
-        ))}
-      </div>
-      <div>
-        <p className="text-xs font-bold text-white">12,453+</p>
-        <p className="text-[10px] text-blue-300">thành viên</p>
-      </div>
-    </div>
-  );
-}
+        {/* Navbar */}
+        <div className="bg-white border-b border-slate-200 px-5 py-3 flex items-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700" />
+            <span className="text-sm font-black text-slate-900">V-IT</span>
+          </div>
+          <div className="flex gap-4 ml-4">
+            {['Bài viết','Sự kiện','Khóa học'].map(n => (
+              <span key={n} className="text-xs text-slate-500">{n}</span>
+            ))}
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <div className="text-xs text-blue-600 font-semibold bg-blue-50 px-3 py-1 rounded-full">Tham gia</div>
+          </div>
+        </div>
 
-/* ── Decorative code block ───────────────────────────────────────────────── */
+        {/* Hero banner inside app */}
+        <div className="bg-gradient-to-br from-[#0a1628] to-[#0f2040] px-5 py-6 relative overflow-hidden">
+          <div className="absolute inset-0 bg-grid-pattern opacity-40" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-blue-600/20 rounded-full blur-3xl" />
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-500/20 border border-blue-500/30 rounded-full mb-3">
+              <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+              <span className="text-[10px] text-blue-300 font-semibold">12,453 thành viên</span>
+            </div>
+            <h2 className="text-white font-black text-xl leading-tight mb-2">Nơi kết nối cộng đồng<br/>IT Việt Nam 🇻🇳</h2>
+            <p className="text-slate-400 text-xs mb-4 max-w-xs">Học hỏi · Chia sẻ · Phát triển</p>
+            <div className="flex gap-2">
+              <div className="px-3 py-1.5 bg-blue-600 rounded-lg text-[10px] text-white font-bold">Tham gia ngay</div>
+              <div className="px-3 py-1.5 bg-white/10 rounded-lg text-[10px] text-white">Khám phá</div>
+            </div>
+          </div>
+        </div>
 
-function CodeDecor() {
-  return (
-    <div className="glass rounded-xl p-4 font-mono text-xs w-64 leading-relaxed">
-      <div className="flex gap-1.5 mb-3">
-        <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
-        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
-        <div className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
+        {/* Article feed */}
+        <div className="px-5 py-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-bold text-slate-700">Bài viết nổi bật</span>
+            <span className="text-[10px] text-blue-500">Xem tất cả →</span>
+          </div>
+
+          {/* Article row 1 */}
+          <div className="flex gap-3 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-2 hover:border-blue-200 transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-lg shrink-0">⚛️</div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="text-[9px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">Frontend</span>
+                <span className="text-[9px] text-orange-500 font-bold bg-orange-50 px-1.5 py-0.5 rounded">🔥 Hot</span>
+              </div>
+              <p className="text-xs font-semibold text-slate-800 truncate">React Server Components: Tương lai của React</p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-4 h-4 rounded-full bg-gradient-to-br from-indigo-400 to-violet-500 flex items-center justify-center text-[7px] font-bold text-white">NM</div>
+                <span className="text-[9px] text-slate-400">Nguyễn Minh Khôi · 8 phút đọc · 2.4k lượt xem</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Article row 2 */}
+          <div className="flex gap-3 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-2">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-lg shrink-0">🐳</div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">DevOps</span>
+              </div>
+              <p className="text-xs font-semibold text-slate-800 truncate">Docker & Kubernetes: Production-ready setup</p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-4 h-4 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-[7px] font-bold text-white">TL</div>
+                <span className="text-[9px] text-slate-400">Trần Lê Hữu · 12 phút đọc · 1.8k lượt xem</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Article row 3 */}
+          <div className="flex gap-3 p-3 bg-white rounded-xl border border-slate-100 shadow-sm mb-4">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-lg shrink-0">🤖</div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="text-[9px] font-bold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">AI/ML</span>
+              </div>
+              <p className="text-xs font-semibold text-slate-800 truncate">LLM Fine-tuning với dữ liệu tiếng Việt</p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-4 h-4 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-[7px] font-bold text-white">LQ</div>
+                <span className="text-[9px] text-slate-400">Lê Quang Hưng · 15 phút đọc · 3.1k lượt xem</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Upcoming event strip */}
+          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-200 rounded-xl">
+            <div className="w-9 h-9 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex flex-col items-center justify-center text-white shrink-0">
+              <span className="text-[8px] font-bold">T7</span>
+              <span className="text-xs font-black">15</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-slate-800 truncate">Vietnam Tech Summit 2026</p>
+              <p className="text-[9px] text-slate-500">Hà Nội · 1,243 đã đăng ký</p>
+            </div>
+            <span className="text-[9px] text-orange-600 font-bold bg-orange-100 px-2 py-0.5 rounded-full shrink-0">Sắp diễn ra</span>
+          </div>
+        </div>
       </div>
-      <p><span className="text-blue-400">const</span> <span className="text-white">community</span> <span className="text-slate-400">=</span> <span className="text-slate-400">{'{'}</span></p>
-      <p className="pl-3"><span className="text-blue-300">members</span><span className="text-slate-400">:</span> <span className="text-emerald-400">12453</span><span className="text-slate-400">,</span></p>
-      <p className="pl-3"><span className="text-blue-300">mission</span><span className="text-slate-400">:</span> <span className="text-orange-300">&apos;charity&apos;</span><span className="text-slate-400">,</span></p>
-      <p className="pl-3"><span className="text-blue-300">isOpen</span><span className="text-slate-400">:</span> <span className="text-purple-400">true</span></p>
-      <p><span className="text-slate-400">{'}'}</span></p>
+
+      {/* Overlay shimmer */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-white/4 via-transparent to-transparent" />
     </div>
   );
 }
@@ -102,11 +144,11 @@ export default function Hero() {
       {/* Glow blobs */}
       <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse-glow" />
       <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-blue-800/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-[80px] pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-10 flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 flex items-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
 
           {/* Left: Text */}
           <div>
@@ -160,49 +202,11 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right: Floating UI mockup */}
-          <div className="relative hidden lg:flex items-center justify-center h-[560px]">
-
-            {/* Center glow */}
-            <div className="absolute w-64 h-64 bg-blue-500/15 rounded-full blur-3xl" />
-
-            {/* Article card - top left */}
-            <div className="absolute top-0 left-0 drop-shadow-2xl">
-              <ArticleCard />
-            </div>
-
-            {/* Code decor - top right */}
-            <div className="absolute top-12 right-0 drop-shadow-2xl">
-              <CodeDecor />
-            </div>
-
-            {/* Event card - middle left */}
-            <div className="absolute top-1/2 -translate-y-1/2 left-[-20px] drop-shadow-2xl">
-              <EventCard />
-            </div>
-
-            {/* Members badge - center */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <MemberBadge />
-            </div>
-
-            {/* Notif card - bottom right */}
-            <div className="absolute bottom-16 right-0 drop-shadow-2xl">
-              <NotifCard />
-            </div>
-
-            {/* Stats pill - bottom left */}
-            <div className="absolute bottom-0 left-8 glass rounded-xl px-4 py-3 flex items-center gap-3">
-              <TrendingUp className="w-4 h-4 text-blue-400 shrink-0" />
-              <div>
-                <p className="text-xs font-bold text-white">847 bài viết</p>
-                <p className="text-[10px] text-slate-400">từ cộng đồng</p>
-              </div>
-            </div>
-
-            {/* Decorative ring */}
-            <div className="absolute w-80 h-80 rounded-full border border-blue-500/10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute w-[420px] h-[420px] rounded-full border border-blue-500/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+          {/* Right: App screenshot mockup */}
+          <div className="relative hidden lg:flex items-center justify-center">
+            {/* Glow behind mockup */}
+            <div className="absolute w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <AppMockup />
           </div>
         </div>
       </div>
