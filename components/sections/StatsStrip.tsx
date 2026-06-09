@@ -20,14 +20,6 @@ export default function StatsStrip() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header */}
-        <div className="text-center mb-14">
-          <p className="text-blue-400 text-sm font-semibold uppercase tracking-widest mb-3">Con số biết nói</p>
-          <h2 className="text-3xl sm:text-4xl font-black text-white">
-            Cộng đồng lớn mạnh mỗi ngày
-          </h2>
-        </div>
-
         {/* Stats grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {STATS.map(({ value, label }) => (
