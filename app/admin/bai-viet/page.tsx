@@ -1,8 +1,14 @@
 'use client';
 
-import { useEffect, useState, FormEvent } from 'react';
-import { Plus, Pencil, Trash2, X, Star, StarOff, ChevronDown } from 'lucide-react';
+import { useEffect, useRef, useState, FormEvent } from 'react';
+import dynamic from 'next/dynamic';
+import { Plus, Pencil, Trash2, X, Star, StarOff, FileText, Loader2 } from 'lucide-react';
 import type { Article, Author } from '@/lib/data';
+
+const RichTextEditor = dynamic(() => import('@/components/admin/RichTextEditor'), {
+  ssr: false,
+  loading: () => <div className="border border-slate-300 rounded-xl h-48 bg-slate-50 animate-pulse" />,
+});
 
 const CATEGORIES = ['Frontend', 'Backend', 'AI/ML', 'DevOps', 'Mobile', 'Security'];
 
@@ -24,6 +30,7 @@ const emptyForm = {
   title: '',
   slug: '',
   excerpt: '',
+  content: '',
   category: 'Frontend',
   tags: '',
   readTime: 5,
@@ -46,27 +53,26 @@ export default function AdminArticlesPage() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
+  const [editorKey, setEditorKey] = useState(0);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState('');
+  const pdfInputRef = useRef<HTMLInputElement>(null);
 
   async function loadData() {
-    const [artRes, authRes] = await Promise.all([
-      fetch('/api/admin/articles'),
-      fetch('/api/admin/articles').then(() =>
-        import('@/lib/data').then(m => m.authors)
-      ),
-    ]);
+    const artRes = await fetch('/api/admin/articles');
     setArticles(await artRes.json());
-    setAuthors(authRes as unknown as Author[]);
   }
 
   useEffect(() => {
     loadData();
-    // Load authors from mock data (client-side import)
     import('@/lib/data').then(m => setAuthors(m.authors));
   }, []);
 
   function openNew() {
     setEditId(null);
     setForm(emptyForm);
+    setEditorKey(k => k + 1);
+    setPdfError('');
     setShowForm(true);
   }
 
@@ -76,6 +82,7 @@ export default function AdminArticlesPage() {
       title: a.title,
       slug: a.slug,
       excerpt: a.excerpt,
+      content: a.content ?? '',
       category: a.category,
       tags: a.tags.join(', '),
       readTime: a.readTime,
@@ -87,6 +94,8 @@ export default function AdminArticlesPage() {
       views: a.views,
       likes: a.likes,
     });
+    setEditorKey(k => k + 1);
+    setPdfError('');
     setShowForm(true);
   }
 
@@ -95,12 +104,39 @@ export default function AdminArticlesPage() {
     setEditId(null);
   }
 
+  async function handlePdfImport(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = '';
+    setPdfLoading(true);
+    setPdfError('');
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/admin/parse-pdf', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Lỗi không xác định');
+      const html = data.text
+        .split(/\n{2,}/)
+        .map((p: string) => `<p>${p.replace(/\n/g, '<br/>')}</p>`)
+        .join('');
+      set('content', html);
+      setEditorKey(k => k + 1);
+    } catch (err) {
+      setPdfError(String(err instanceof Error ? err.message : err));
+    } finally {
+      setPdfLoading(false);
+    }
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSaving(true);
     const author = authors.find(au => au.id === Number(form.authorId));
+    const contentVal = form.content && form.content !== '<p></p>' ? form.content : null;
     const payload = {
       ...form,
+      content: contentVal,
       readTime: Number(form.readTime),
       views: Number(form.views),
       likes: Number(form.likes),
@@ -166,6 +202,7 @@ export default function AdminArticlesPage() {
               <th className="text-left px-5 py-3.5 font-semibold text-slate-600 hidden md:table-cell">Danh mục</th>
               <th className="text-left px-5 py-3.5 font-semibold text-slate-600 hidden lg:table-cell">Ngày</th>
               <th className="text-center px-5 py-3.5 font-semibold text-slate-600 hidden md:table-cell">Nổi bật</th>
+              <th className="text-center px-5 py-3.5 font-semibold text-slate-600 hidden lg:table-cell">Nội dung</th>
               <th className="text-right px-5 py-3.5 font-semibold text-slate-600">Thao tác</th>
             </tr>
           </thead>
@@ -194,6 +231,11 @@ export default function AdminArticlesPage() {
                   {a.featured
                     ? <Star className="w-4 h-4 fill-amber-400 text-amber-400 mx-auto" />
                     : <StarOff className="w-4 h-4 text-slate-300 mx-auto" />}
+                </td>
+                <td className="px-5 py-3.5 text-center hidden lg:table-cell">
+                  {a.content
+                    ? <span className="text-xs px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full font-medium">Có nội dung</span>
+                    : <span className="text-xs px-2 py-0.5 bg-slate-100 text-slate-400 rounded-full">Trống</span>}
                 </td>
                 <td className="px-5 py-3.5">
                   <div className="flex items-center gap-1 justify-end">
@@ -249,7 +291,7 @@ export default function AdminArticlesPage() {
       {/* Form panel */}
       {showForm && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-start justify-end">
-          <div className="w-full max-w-xl h-full bg-white shadow-2xl overflow-y-auto">
+          <div className="w-full max-w-2xl h-full bg-white shadow-2xl overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between z-10">
               <h2 className="font-bold text-slate-900 text-lg">
                 {editId != null ? 'Sửa bài viết' : 'Thêm bài viết mới'}
@@ -290,6 +332,37 @@ export default function AdminArticlesPage() {
                   placeholder="Mô tả ngắn về bài viết..."
                 />
               </Field>
+
+              {/* Content editor */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-sm font-semibold text-slate-700">Nội dung bài viết</label>
+                  <label className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${pdfLoading ? 'bg-slate-100 text-slate-400' : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200'}`}>
+                    {pdfLoading
+                      ? <><Loader2 size={13} className="animate-spin" /> Đang đọc PDF...</>
+                      : <><FileText size={13} /> Import từ PDF</>}
+                    <input
+                      ref={pdfInputRef}
+                      type="file"
+                      accept=".pdf,application/pdf"
+                      className="hidden"
+                      onChange={handlePdfImport}
+                      disabled={pdfLoading}
+                    />
+                  </label>
+                </div>
+                {pdfError && (
+                  <p className="text-xs text-red-600 mb-2 bg-red-50 px-3 py-2 rounded-lg">{pdfError}</p>
+                )}
+                <RichTextEditor
+                  key={`editor-${editId ?? 'new'}-${editorKey}`}
+                  value={form.content}
+                  onChange={v => set('content', v)}
+                />
+                <p className="text-xs text-slate-400 mt-1.5">
+                  Hỗ trợ tiêu đề, in đậm, in nghiêng, danh sách, trích dẫn, khối code, v.v.
+                </p>
+              </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Danh mục">

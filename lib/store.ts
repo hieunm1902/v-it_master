@@ -114,6 +114,19 @@ export async function getCourses(): Promise<Course[]> {
   }
 }
 
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
+  try {
+    const item = await prisma.article.findUnique({
+      where: { slug },
+      include: { author: true },
+    });
+    if (!item) return mockArticles.find(a => a.slug === slug) ?? null;
+    return mapArticle(item);
+  } catch {
+    return mockArticles.find(a => a.slug === slug) ?? null;
+  }
+}
+
 export async function getCharityProjects(): Promise<CharityProject[]> {
   try {
     const items = await prisma.charityProject.findMany({ orderBy: { id: 'asc' } });
