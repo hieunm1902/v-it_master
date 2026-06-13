@@ -15,8 +15,8 @@ export default function HomePage() {
       <main>
         <Hero />
         <Speakers />
-        <FeaturedArticles />
         <UpcomingEvents />
+        <FeaturedArticles />
         <FeaturedCourses />
         <CharityBanner />
         <Newsletter />

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Calendar, MapPin, Users, ArrowRight, Globe, Zap } from 'lucide-react';
-import { events } from '@/lib/data';
+import { getEvents } from '@/lib/store';
 import { formatDate } from '@/lib/utils';
 
 const EVENT_TYPE_COLORS: Record<string, string> = {
@@ -22,7 +22,7 @@ const EVENT_TYPE_LABELS: Record<string, string> = {
 };
 
 export default function UpcomingEvents() {
-  const upcoming = events.slice(0, 4);
+  const upcoming = getEvents().slice(0, 4);
 
   return (
     <section className="py-20 bg-white">

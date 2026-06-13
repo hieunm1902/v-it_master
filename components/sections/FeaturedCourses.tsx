@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Star, Users, Clock, BookOpen, ArrowRight, GraduationCap } from 'lucide-react';
-import { courses } from '@/lib/data';
+import { getCourses } from '@/lib/store';
 
 const LEVEL_COLORS = {
   Beginner:     'bg-green-100 text-green-700 border-green-200',
@@ -9,7 +9,7 @@ const LEVEL_COLORS = {
 };
 
 export default function FeaturedCourses() {
-  const featured = courses.slice(0, 3);
+  const featured = getCourses().slice(0, 3);
 
   return (
     <section className="py-20 bg-white">

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Eye, Heart, Clock, ArrowRight, TrendingUp } from 'lucide-react';
-import { articles, articleCategories } from '@/lib/data';
+import { getArticles } from '@/lib/store';
+import { articleCategories, type Article } from '@/lib/data';
 import { formatDate } from '@/lib/utils';
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -12,7 +13,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   Security: 'bg-red-100 text-red-700',
 };
 
-function BigArticleCard({ article }: { article: typeof articles[0] }) {
+function BigArticleCard({ article }: { article: Article }) {
   const catColor = CATEGORY_COLORS[article.category] ?? 'bg-slate-100 text-slate-600';
   return (
     <Link href={`/bai-viet/${article.slug}`} className="group block">
@@ -64,7 +65,7 @@ function BigArticleCard({ article }: { article: typeof articles[0] }) {
   );
 }
 
-function SmallArticleCard({ article }: { article: typeof articles[0] }) {
+function SmallArticleCard({ article }: { article: Article }) {
   const catColor = CATEGORY_COLORS[article.category] ?? 'bg-slate-100 text-slate-600';
   return (
     <Link href={`/bai-viet/${article.slug}`} className="group flex gap-4 p-4 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all">
@@ -89,6 +90,7 @@ function SmallArticleCard({ article }: { article: typeof articles[0] }) {
 }
 
 export default function FeaturedArticles() {
+  const articles = getArticles();
   const featured = articles.filter(a => a.featured).slice(0, 3);
   const rest = articles.filter(a => !a.featured).slice(0, 6);
 

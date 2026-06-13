@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { Heart, Target, CheckCircle2, ArrowRight, TrendingUp } from 'lucide-react';
-import { charityProjects, communityStats } from '@/lib/data';
+import { getCharityProjects } from '@/lib/store';
 import { formatCurrency } from '@/lib/utils';
 
 export default function CharityBanner() {
+  const charityProjects = getCharityProjects();
   const active = charityProjects.filter(p => p.status === 'active');
   const completed = charityProjects.filter(p => p.status === 'completed');
   const totalRaised = charityProjects.reduce((s, p) => s + p.raised, 0);
