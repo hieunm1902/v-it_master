@@ -164,6 +164,7 @@ body {
 .tiptap code { background: #f1f5f9; color: #4f46e5; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-size: 0.8125rem; font-family: monospace; }
 .tiptap pre code { background: transparent; color: inherit; padding: 0; }
 .tiptap hr { border-color: #e2e8f0; margin: 0.75rem 0; }
+.tiptap-img { border-radius: 0.75rem; max-width: 100%; height: auto; margin: 1rem auto; display: block; border: 1px solid #e2e8f0; }
 
 /* ── Article content prose ────────────────────────────────────────────────── */
 .article-content h1 { font-size: 1.875rem; font-weight: 800; margin-top: 2rem; margin-bottom: 1rem; color: #0f172a; line-height: 1.3; }
