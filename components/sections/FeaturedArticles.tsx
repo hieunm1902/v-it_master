@@ -89,8 +89,8 @@ function SmallArticleCard({ article }: { article: Article }) {
   );
 }
 
-export default function FeaturedArticles() {
-  const articles = getArticles();
+export default async function FeaturedArticles() {
+  const articles = await getArticles();
   const featured = articles.filter(a => a.featured).slice(0, 3);
   const rest = articles.filter(a => !a.featured).slice(0, 6);
 

@@ -21,8 +21,8 @@ const EVENT_TYPE_LABELS: Record<string, string> = {
   sharing:    'Sharing',
 };
 
-export default function UpcomingEvents() {
-  const upcoming = getEvents().slice(0, 4);
+export default async function UpcomingEvents() {
+  const upcoming = (await getEvents()).slice(0, 4);
 
   return (
     <section className="py-20 bg-white">

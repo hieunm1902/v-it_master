@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id        Int      @id @default(autoincrement())
+  name      String
+  avatar    String
+  role      String
+  company   String
+  bio       String
+  articles  Int      @default(0)
+  followers Int      @default(0)
+  github    String?
+  linkedin  String?
+
+  authoredArticles  Article[] @relation("ArticleAuthor")
+  instructedCourses Course[]  @relation("CourseInstructor")
+}
+
+model Article {
+  id         Int      @id @default(autoincrement())
+  slug       String   @unique
+  title      String
+  excerpt    String
+  content    String?
+  authorId   Int
+  author     Author   @relation("ArticleAuthor", fields: [authorId], references: [id])
+  category   String
+  tags       String[]
+  readTime   Int      @default(5)
+  date       String
+  views      Int      @default(0)
+  likes      Int      @default(0)
+  featured   Boolean  @default(false)
+  coverColor String
+  coverIcon  String   @default("📝")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Event {
+  id              Int      @id @default(autoincrement())
+  slug            String   @unique
+  title           String
+  description     String
+  type            String
+  date            String
+  endDate         String?
+  time            String
+  location        String
+  venue           String?
+  isOnline        Boolean  @default(false)
+  speakers        Json     @default("[]")
+  registeredCount Int      @default(0)
+  capacity        Int      @default(100)
+  price           String   @default("free")
+  priceAmount     Int?
+  tags            String[]
+  coverColor      String
+  organizer       String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Course {
+  id           Int      @id @default(autoincrement())
+  slug         String   @unique
+  title        String
+  description  String
+  instructorId Int
+  instructor   Author   @relation("CourseInstructor", fields: [instructorId], references: [id])
+  category     String
+  level        String
+  duration     String
+  lessons      Int      @default(0)
+  students     Int      @default(0)
+  rating       Float    @default(0)
+  price        String   @default("free")
+  priceAmount  Int?
+  tags         String[]
+  coverColor   String
+  updatedAt    String
+  createdAt    DateTime @default(now())
+}
+
+model CharityProject {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+  target        Int
+  raised        Int      @default(0)
+  beneficiaries String
+  completedAt   String?
+  status        String   @default("active")
+  coverColor    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

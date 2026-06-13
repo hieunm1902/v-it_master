@@ -8,8 +8,8 @@ const LEVEL_COLORS = {
   Advanced:     'bg-red-100 text-red-700 border-red-200',
 };
 
-export default function FeaturedCourses() {
-  const featured = getCourses().slice(0, 3);
+export default async function FeaturedCourses() {
+  const featured = (await getCourses()).slice(0, 3);
 
   return (
     <section className="py-20 bg-white">

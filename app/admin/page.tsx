@@ -2,11 +2,13 @@ import { getArticles, getEvents, getCourses, getCharityProjects } from '@/lib/st
 import { FileText, Calendar, GraduationCap, Heart, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 
-export default function AdminDashboard() {
-  const articles = getArticles();
-  const events = getEvents();
-  const courses = getCourses();
-  const charity = getCharityProjects();
+export default async function AdminDashboard() {
+  const [articles, events, courses, charity] = await Promise.all([
+    getArticles(),
+    getEvents(),
+    getCourses(),
+    getCharityProjects(),
+  ]);
 
   const totalRaised = charity.reduce((s, p) => s + p.raised, 0);
   const activeCharity = charity.filter(p => p.status === 'active').length;

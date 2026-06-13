@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCharityProjects, saveCharityProjects } from '@/lib/store';
+import { prisma } from '@/lib/db';
 
 export async function PUT(
   req: Request,
@@ -7,11 +7,24 @@ export async function PUT(
 ) {
   const { id } = await params;
   const body = await req.json();
-  const items = getCharityProjects().map(p =>
-    p.id === Number(id) ? { ...p, ...body, id: Number(id) } : p,
-  );
-  saveCharityProjects(items);
-  return NextResponse.json(items.find(p => p.id === Number(id)));
+  try {
+    const project = await prisma.charityProject.update({
+      where: { id: Number(id) },
+      data: {
+        ...(body.title !== undefined && { title: body.title }),
+        ...(body.description !== undefined && { description: body.description }),
+        ...(body.target !== undefined && { target: Number(body.target) }),
+        ...(body.raised !== undefined && { raised: Number(body.raised) }),
+        ...(body.beneficiaries !== undefined && { beneficiaries: body.beneficiaries }),
+        ...(body.completedAt !== undefined && { completedAt: body.completedAt || null }),
+        ...(body.status !== undefined && { status: body.status }),
+        ...(body.coverColor !== undefined && { coverColor: body.coverColor }),
+      },
+    });
+    return NextResponse.json(project);
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 400 });
+  }
 }
 
 export async function DELETE(
@@ -19,6 +32,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  saveCharityProjects(getCharityProjects().filter(p => p.id !== Number(id)));
-  return NextResponse.json({ ok: true });
+  try {
+    await prisma.charityProject.delete({ where: { id: Number(id) } });
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 400 });
+  }
 }

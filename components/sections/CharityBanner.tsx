@@ -3,8 +3,8 @@ import { Heart, Target, CheckCircle2, ArrowRight, TrendingUp } from 'lucide-reac
 import { getCharityProjects } from '@/lib/store';
 import { formatCurrency } from '@/lib/utils';
 
-export default function CharityBanner() {
-  const charityProjects = getCharityProjects();
+export default async function CharityBanner() {
+  const charityProjects = await getCharityProjects();
   const active = charityProjects.filter(p => p.status === 'active');
   const completed = charityProjects.filter(p => p.status === 'completed');
   const totalRaised = charityProjects.reduce((s, p) => s + p.raised, 0);
