@@ -1,14 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  webpack: (config) => {
-    // pdf-parse uses pdfjs-dist which optionally depends on canvas
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      canvas: false,
-    };
-    return config;
-  },
+  // Next.js 16 uses Turbopack by default; the pdf-parse API route runs in
+  // nodejs runtime so no bundler alias is needed for the optional canvas dep.
+  turbopack: {},
 };
 
 export default nextConfig;
